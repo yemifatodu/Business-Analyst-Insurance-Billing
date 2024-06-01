@@ -69,18 +69,20 @@
 
 ### SQL solutions to the provided questions:
 
-### Q1 Write a query in SQL that will get all records from a given table.
+ Q1 Write a query in SQL that will get all records from a given table.
 
-```SELECT * FROM table_name;```
+```sql
+SELECT * FROM table_name;```
 
-### Q2 Write a query in SQL that joins the KIT table to the CLINIC table.
+ Q2 Write a query in SQL that joins the KIT table to the CLINIC table.
 
-```SELECT *
+```sql
+SELECT *
    FROM KIT
    JOIN CLINIC ON KIT.ORDERING_CLINIC_ID = CLINIC.CLINIC_ID;```
 
 
-### Q3 Write a query in SQL that joins the KIT table to the PHYSICIAN table.
+ Q3 Write a query in SQL that joins the KIT table to the PHYSICIAN table.
 
 ```sql
 SELECT *
@@ -89,56 +91,57 @@ JOIN PHYSICIAN ON KIT.ORDERING_PHYSICIAN_ID = PHYSICIAN.PHYSICIAN_ID;```
 
 
 
-### Q3 Write a query in SQL that joins the KIT table to the PHYSICIAN table.
+Q4 Write a query in SQL to get count of Kit's by Physician NPI.
 
-```SELECT *
-   FROM KIT
-   JOIN PHYSICIAN ON KIT.ORDERING_PHYSICIAN_ID = PHYSICIAN.PHYSICIAN_ID;```
-
-### Q4 Write a query in SQL to get count of Kit's by Physician NPI.
-
-```SELECT PHYSICIAN.NPI_NUMBER, COUNT(KIT.KITID) AS Kit_Count
+```sql
+SELECT PHYSICIAN.NPI_NUMBER, COUNT(KIT.KITID) AS Kit_Count
    FROM KIT
    JOIN PHYSICIAN ON KIT.ORDERING_PHYSICIAN_ID = PHYSICIAN.PHYSICIAN_ID
    GROUP BY PHYSICIAN.NPI_NUMBER;```
 
-### Q5 Write a query in SQL to get count of Kit's by Clinic.
+Q5 Write a query in SQL to get count of Kit's by Clinic.
 
-```SELECT CLINIC.CLINIC_NAME, COUNT(KIT.KITID) AS Kit_Count
+```sql
+SELECT CLINIC.CLINIC_NAME, COUNT(KIT.KITID) AS Kit_Count
    FROM KIT
    JOIN CLINIC ON KIT.ORDERING_CLINIC_ID = CLINIC.CLINIC_ID
    GROUP BY CLINIC.CLINIC_NAME;```
 
-### Q6 Write a query in SQL to get kit count of providers and kit count of clinics by Carrier.
+Q6 Write a query in SQL to get kit count of providers and kit count of clinics by Carrier.
 
-```SELECT 
+```sql
+SELECT 
     KIT.CARRIER,
     COUNT(DISTINCT KIT.ORDERING_PHYSICIAN_ID) AS Provider_Kit_Count,
     COUNT(DISTINCT KIT.ORDERING_CLINIC_ID) AS Clinic_Kit_Count
 FROM KIT
 GROUP BY KIT.CARRIER;```
 
-### Q7 Write a query in SQL to get distinct count of physicians who ordered in Q1 of 2021.
+Q7 Write a query in SQL to get distinct count of physicians who ordered in Q1 of 2021.
 
-```SELECT COUNT(DISTINCT ORDERING_PHYSICIAN_ID) AS Distinct_Physician_Count
+```sql
+SELECT COUNT(DISTINCT ORDERING_PHYSICIAN_ID) AS Distinct_Physician_Count
 FROM KIT
 WHERE DATE_OF_SERVICE BETWEEN '2021-01-01' AND '2021-03-31';```
 
-### Q8 Write a query in SQL to get the number of days between received date and date of service for each kit.
+Q8 Write a query in SQL to get the number of days between received date and date of service for each kit.
 
-```SELECT KITID, DATE_OF_SERVICE, RECEIVED_DATE,
+```sql
+SELECT KITID, DATE_OF_SERVICE, RECEIVED_DATE,
        DATEDIFF(DAY, DATE_OF_SERVICE, RECEIVED_DATE) AS Days_Between
    FROM KIT;```
 
-### Q9 What was the average ship time for each carrier?
+Q9 What was the average ship time for each carrier?
 
-```SELECT CARRIER, AVG(DATEDIFF(DAY, DATE_OF_SERVICE, RECEIVED_DATE)) AS Average_Ship_Time
+```sql
+SELECT CARRIER, AVG(DATEDIFF(DAY, DATE_OF_SERVICE, RECEIVED_DATE)) AS Average_Ship_Time
    FROM KIT
    GROUP BY CARRIER;```
 
-### Q10 What was the average ship time for each clinic for each date of service quarter?
+Q10 What was the average ship time for each clinic for each date of service quarter?
 
-```SELECT CLINIC.CLINIC_NAME, 
+```sql
+SELECT CLINIC.CLINIC_NAME, 
        DATEPART(QUARTER, DATE_OF_SERVICE) AS Service_Quarter,
        AVG(DATEDIFF(DAY, DATE_OF_SERVICE, RECEIVED_DATE)) AS Average_Ship_Time
 FROM KIT
